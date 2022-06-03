@@ -17,6 +17,7 @@ public class MutanteServiceImpl implements MutanteService{
 
     private final MutanteRepository mutanteRepository;
 
+
     @Override
     public boolean validarMutante(String[] adn) {
         
@@ -33,7 +34,7 @@ public class MutanteServiceImpl implements MutanteService{
         int longitud = matrix[0].length;
         for (int i = 0; i < longitud; i++){
             for (int j = 0; j < longitud; j++){
-                letra = Character.toString(matrix[i][j]);
+                letra = Character.toString(matrix[i][j]).toLowerCase();
                 if (letra.equals(letraAnterior) ){
                     palabra = palabra + 1;
                     if(palabra == 3){
@@ -57,8 +58,8 @@ public class MutanteServiceImpl implements MutanteService{
                 while(recorrer){
                     iAux = iAux +1;
                     if(iAux < longitud){
-                        letraSiguiente = Character.toString(matrix[iAux][j]);
-                    } else {
+                        letraSiguiente = Character.toString(matrix[iAux][j]).toLowerCase();
+                    }else{
                         recorrer = false;
                         palabra = 0;
                     }
@@ -82,10 +83,6 @@ public class MutanteServiceImpl implements MutanteService{
 
         //Diagonales
         
-        if (PalabraEncontrada > 3){
-            isHuman = false;
-        }
-
         //fin implementacion
 
         //Guardar datos
@@ -138,6 +135,37 @@ public class MutanteServiceImpl implements MutanteService{
         }
         
         return matrix;
+    }
+
+    @Override
+    public String validarLetras(String[] adn) {
+        String mensaje = "";
+        try {
+            int filas = adn.length;
+            int columnas = adn[0].length();
+            if(filas != columnas){
+                mensaje ="Las matriz debe ser NxN";
+                return mensaje;
+            }
+        } catch (Exception e) {
+            mensaje ="Las matriz debe ser NxN";
+            return mensaje;
+        }
+       
+        
+
+        //validar letas de la matriz
+        char[][] matrix = convertirStringaChar(adn);
+        int longitud = matrix[0].length;
+        for (int i = 0; i < longitud; i++){
+            for (int j = 0; j < longitud; j++){
+               String letra = Character.toString(matrix[i][j]).toLowerCase();
+               if(!letra.equals("a")||!letra.equals("t")||!letra.equals("c")||!letra.equals("g")){
+                    mensaje = "Solo se permiten las letras A, T, C, G";
+               }
+            }
+        }
+        return mensaje;
     }
 
 

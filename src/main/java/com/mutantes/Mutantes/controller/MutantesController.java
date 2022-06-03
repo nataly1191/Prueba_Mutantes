@@ -23,12 +23,17 @@ public class MutantesController {
     @PostMapping("/mutant")
     public ResponseEntity<?> validarMutante(@RequestBody AdnRequest adn){
         try {
+            String mensaje = mutanteService.validarLetras(adn.getAdn());
+            if(mensaje.equals("")){
             boolean isHumano = mutanteService.validarMutante(adn.getAdn());
             if(isHumano){
                 return new ResponseEntity<>("Humano", HttpStatus.FORBIDDEN);
             } else {
                 return new ResponseEntity<>("Mutante", HttpStatus.OK);
             }
+        }else {
+            return new ResponseEntity<>(mensaje, HttpStatus.BAD_REQUEST);
+        }
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
