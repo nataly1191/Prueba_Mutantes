@@ -53,16 +53,20 @@ public class MutanteServiceImpl implements MutanteService{
         for(int i = 0; i < longitud; i++){
             int iAux = i;
             for(int j = 0; j < longitud; j++){
-                letra = Character.toString(matrix[iAux][j]);
-                while(recorrer = true){
+                letra = Character.toString(matrix[i][j]);
+                while(recorrer){
                     iAux = iAux +1;
                     if(iAux < longitud){
                         letraSiguiente = Character.toString(matrix[iAux][j]);
+                    } else {
+                        recorrer = false;
+                        palabra = 0;
                     }
-                    if(letra == letraSiguiente){
+                    if(letra.equals(letraSiguiente)){
                         palabra = palabra + 1;
                         if(palabra == 3){
                             PalabraEncontrada = PalabraEncontrada + 1;
+                            palabra = 0;
                             recorrer = false;
                         }
                     }else{
@@ -71,11 +75,17 @@ public class MutanteServiceImpl implements MutanteService{
                     }
                     letra = letraSiguiente;
                 }
+                recorrer = true;
+                iAux = i;
             }
         }
 
         //Diagonales
         
+        if (PalabraEncontrada > 3){
+            isHuman = false;
+        }
+
         //fin implementacion
 
         //Guardar datos
